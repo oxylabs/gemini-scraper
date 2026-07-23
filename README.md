@@ -1,6 +1,6 @@
 # Gemini Scraper
 
-[![Oxylabs promo code](https://github.com/oxylabs/gemini-scraper/blob/main/Gemini-scraper-github%201090x275.png)](https://oxylabs.io/products/scraper-api/serp/gemini)
+[![Oxylabs promo code](https://github.com/oxylabs/gemini-scraper/blob/main/Gemini-scraper-github%201090x275.png)](https://oxylabs.io/products/scraper-api/serp/gemini/web?utm_content=oxylabs-web-scraper-api&groupid=877)
 
 [![](https://dcbadge.limes.pink/api/server/Pds3gBmKMH?style=for-the-badge&theme=discord)](https://discord.gg/Pds3gBmKMH) [![YouTube](https://img.shields.io/badge/YouTube-Oxylabs-red?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@oxylabs)
 
