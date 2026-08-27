@@ -1,0 +1,15 @@
+# Gemini Scraper - Web Scraper API (Push-Pull integration)
+# Push-Pull is asynchronous: this returns a job ID, not the result.
+# Set "callback_url" to be notified when the job is done.
+
+POST https://data.oxylabs.io/v1/queries
+Content-Type: application/json
+Authorization: Basic USERNAME:PASSWORD
+
+{
+  "source": "gemini",
+  "prompt": "best supplements for better sleep",
+  "parse": true,
+  "geo_location": "United States",
+  "callback_url": "https://your-server.com/oxylabs-callback"
+}
