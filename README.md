@@ -17,7 +17,7 @@ The Oxylabs Gemini target wraps this interaction behind a single API call. Inste
 
 ## How it works
 
-Submit a prompt together with valid Web Scraper API credentials, then make a POST request to the `/v1/queries` endpoint. The example below uses the synchronous Realtime integration method.
+Submit a prompt together with valid Web Scraper API credentials, then make a POST request to the `/v1/queries` endpoint. The example below uses the synchronous Push-Pull integration method.
 
 > [!TIP]
 > Get a free trial of Oxylabs **Web Scraper API** by registering on the [Dashboard](https://dashboard.oxylabs.io/en/registration).
@@ -33,13 +33,14 @@ payload = {
     'source': 'gemini',
     'prompt': 'best supplements for better sleep',
     'parse': True,
-    'geo_location': 'United States'
+    'geo_location': "United States",
+    'callback_url': "https://your-server.com/oxylabs-callback"
 }
 
 # Get response.
 response = requests.request(
     'POST',
-    'https://realtime.oxylabs.io/v1/queries',
+    'https://data.oxylabs.io/v1/queries',
     auth=('USERNAME', 'PASSWORD'),
     json=payload,
 )
@@ -50,7 +51,7 @@ pprint(response.json())
 
 The documentation also provides equivalent examples for cURL, Node.js, PHP, Go, C#, Java, and a plain URL/JSON payload. Find them in the [Gemini documentation](https://developers.oxylabs.io/api-targets/llms-and-ai/gemini).
 
-The examples use the [Realtime](https://developers.oxylabs.io/products/web-scraper-api/integration-methods/realtime) integration method. You can also use the [Proxy Endpoint](https://developers.oxylabs.io/products/web-scraper-api/integration-methods/proxy-endpoint) or asynchronous [Push-Pull](https://developers.oxylabs.io/products/web-scraper-api/integration-methods/push-pull) methods.
+Submitting a job with [Push-Pull](https://developers.oxylabs.io/products/web-scraper-api/integration-methods/push-pull) integration (including [batch queries](https://developers.oxylabs.io/products/web-scraper-api/integration-methods/push-pull#batch-query)) method returns the job ID immediately – not the result. Once the job status is done, retrieve the parsed response. See Integration method on the [LLMs and AI](https://developers.oxylabs.io/api-targets/llms-and-ai#integration-method) page for the full submit-and-retrieve flow.
 
 ## Request parameters
 
@@ -63,6 +64,7 @@ Basic setup and customization options for the `gemini` source:
 | `parse`              | Set to `true` to return structured JSON data.                              | `false`       |
 | `geo_location`       | Specify a country to route the request from.                               | –             |
 | `callback_url`       | URL to your callback endpoint (used with Push-Pull).                       | –             |
+| `browser_instructions`| Optional custom browser instructions when rendering JavaScript.           | –             |
 
 ## Key Gemini features
 
@@ -92,13 +94,13 @@ The table below is a side-by-side specification reference, not a ranking. Which 
 | Markdown output            | `markdown_text`                                              | `markdown_text`, plus `markdown_json`                            |
 | Plain-text output          | `response_text`                                              | `response_text`                                                  |
 | Model identifier in output | –                                                            | `llm_model`                                                      |
-| Integration methods        | Realtime, Proxy Endpoint, Push-Pull                          | Realtime, Proxy Endpoint, Push-Pull                              |
+| Integration methods        | Push-Pull                          | Push-Pull                              |
 
 Compared with other LLM and AI targets, the practical distinctions are in the per-target `content` schema (field names and the extra data each returns) and in target-specific limits and parameters. For more information on LLM scraping targets, refer to our [documentation](https://developers.oxylabs.io/api-targets/llms-and-ai).
 
 ## Output samples
 
-With `parse` set to `true`, the API returns a structured JSON object containing the Gemini output. A trimmed snippet looks like this:
+Once the job is retrieved via the Push-Pull results endpoint, Web Scraper API is capable of extracting a JSON object that contains Gemini output, offering structured data on various elements of the results page.
 
 ```json
 {
@@ -109,15 +111,28 @@ With `parse` set to `true`, the API returns a structured JSON object containing 
       "url": "https://gemini.google.com/app/ca6b069d5af5c809",
       "content": {
         "prompt": "best supplements for better sleep",
-        "response_text": "If you are tossing and turning, you are definitely not alone. The supplement aisle is packed with options...",
-        "markdown_text": "If you are tossing and turning, you are definitely not alone. The supplement aisle is packed with options...",
+        "response_text": "If you are tossing and turning, you are definitely not alone. The supplement aisle is packed with options promising to help you drift off, but they generally fall into a few different categories based on how they actually affect your body. Here...",
+        "markdown_text": "If you are tossing and turning, you are definitely not alone. The supplement aisle is packed with options promising to help you drift off, but they generally fall into a few different categories based on how they actually affect your body.\n\n Here...",
         "citations": [
           {
             "title": "Hartford HealthCare",
             "url": "https://hartfordhealthcare.org/about-us/news-press/news-detail?articleId=66180",
             "text": "Can These 3 Supplements Really Improve Your Sleep? | Hartford HealthCare | CT",
-            "description": "- Valerian root. This herbal sleep option likely works by acting on GABA receptors in the brain..."
-          }
+            "description": "- Valerian root. This herbal sleep option likely works by acting on GABA receptors in the brain, just like magnesium. \"But it's not without side effects,\" says ..."
+          },
+          {
+            "title": "BBC Good Food",
+            "url": "https://www.bbcgoodfood.com/review/best-sleep-supplements#:~:text=It's%20easy%20to%20get%20enough,a%20role%20in%20sleep%20regulation.",
+            "text": "The best sleep supplements 2026 – tried and tested - BBC Good Food",
+            "description": "It's easy to get enough through diet, but if you are looking to supplement, the NRV is around 300mg, and look for magnesium glycinate which has been shown to ..."
+          },
+          {
+            "title": "PMC - NIH",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11082867/#:~:text=Melatonin%20is%20a%20hormone%20produced,promotes%20relaxation%20and%20reduced%20alertness.",
+            "text": "Current Evidence on Common Dietary Supplements for Sleep Quality - PMC - NIH",
+            "description": "Melatonin is a hormone produced by the pineal gland in the brain and plays a critical role in regulation of the sleep-wake cycle. The pineal gland begins ..."
+          },
+          ...
         ],
         "parse_status_code": 12000
       }
