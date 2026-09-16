@@ -162,7 +162,7 @@ All LLM targets share the same top-level `job` and `results[]` envelope. The fie
 - **Desktop vs mobile** the composition of the response may vary depending on whether the query was made from a desktop or mobile device.
 - **The `citations` field is conditional** and is returned only when citations are present in Gemini's response.
 
-[![Oxylabs promo code](https://github.com/oxylabs/gemini-scraper/blob/main/Github%20repositories%20banner%20v1%402x.png)](https://oxylabs.io/web-api-early-access?&utm_content=web_api_waitinglist&groupid=877)
+[![Oxylabs promo code](https://github.com/oxylabs/gemini-scraper/blob/main/Github%20repositories%20banner%20v1%402x.png)](https://oxylabs.io/web-api-early-access?utm_source=github&utm_medium=referral&utm_content=web_api_waitinglist&groupid=877)
 
 ## Related Oxylabs LLM and AI scrapers
 
