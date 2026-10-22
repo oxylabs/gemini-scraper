@@ -147,13 +147,16 @@ You can also work with the answer in Markdown (`markdown_text`) for easier integ
 
 All LLM targets share the same top-level `job` and `results[]` envelope. The fields below are the Gemini-specific `results[].content` fields:
 
-| Field               | Description                                                                                                                                    | Type    |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `prompt`            | The submitted prompt.                                                                                                                           | string  |
-| `response_text`     | Plain-text response from Gemini.                                                                                                                | string  |
-| `markdown_text`     | Complete response in Markdown.                                                                                                                  | string  |
-| `citations`         | Source citations referenced in the response. Each object has `title`, `url`, `text`, `description`. Returned only when present in the response. | array   |
-| `parse_status_code` | `12000` indicates success. Any other value means the parser failed to extract some or all structured fields.                                    | integer |
+| Field               | Description                                                                                                                                     | Type             |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| `prompt`            | Submitted prompt.                                                                                                                               | string           |
+| `raw_response`      | Raw streamed response from Gemini, one line per item.                                                                                           | array of strings |
+| `response_text`     | Plain text response from Gemini.                                                                                                                | string           |
+| `markdown_text`     | Complete response in Markdown.                                                                                                                  | string           |
+| `citations`         | Source citations referenced in the response. Each object contains `title`, `url`, `text`, and `description`.                                    | array            |
+| `additional_results`| Additional search results. `sources_results` - list of web pages Gemini consulted while answering (`title` and `url`).                         | object           |
+| `parse_status_code` | `12000` – successful. Otherwise, parser failed to extract some or all structured fields.                                                        | integer          |
+| `model`             | AI model used to generate the response.                                                                                                         | string           |
 
 ## Notes and limitations
 
